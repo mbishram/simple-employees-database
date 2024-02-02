@@ -51,7 +51,8 @@ impl EmployeesDatabase {
             }
         }
 
-        // TODO: Extract this function into an associated function sort_data();
+        Self::sort_data(&mut data, order);
+
         if order == ORDER_ASC || order == ORDER_DESC {
             data.sort_by(|a, b| {
                 if order == ORDER_DESC {
@@ -77,16 +78,7 @@ impl EmployeesDatabase {
         let mut data: Vec<[&String; 1]> =
             self.0.iter().map(|(department, _)| [department]).collect();
 
-        // TODO: Extract this function into an associated function sort_data();
-        if order == ORDER_ASC || order == ORDER_DESC {
-            data.sort_by(|a, b| {
-                if order == ORDER_DESC {
-                    b[0].cmp(a[0])
-                } else {
-                    a[0].cmp(b[0])
-                }
-            });
-        }
+        Self::sort_data(&mut data, order);
 
         data.iter().for_each(|row_data| {
             table.add_row(row_data);
@@ -109,16 +101,7 @@ impl EmployeesDatabase {
             }
         }
 
-        // TODO: Extract this function into an associated function sort_data();
-        if order == ORDER_ASC || order == ORDER_DESC {
-            data.sort_by(|a, b| {
-                if order == ORDER_DESC {
-                    b[0].cmp(a[0])
-                } else {
-                    a[0].cmp(b[0])
-                }
-            });
-        }
+        Self::sort_data(&mut data, order);
 
         data.iter().for_each(|row_data| {
             table.add_row(row_data);
@@ -167,5 +150,17 @@ impl EmployeesDatabase {
         );
         println!("  {}\t\t\t\t\t\tShow help", "help".bold().blue());
         println!("  {}\t\t\t\t\t\tExit program", "exit".bold().blue());
+    }
+
+    fn sort_data<const COUNT: usize>(data: &mut Vec<[&String; COUNT]>, order: &str) {
+        if order == ORDER_ASC || order == ORDER_DESC {
+            data.sort_by(|a, b| {
+                if order == ORDER_DESC {
+                    b[0].cmp(a[0])
+                } else {
+                    a[0].cmp(b[0])
+                }
+            });
+        }
     }
 }
